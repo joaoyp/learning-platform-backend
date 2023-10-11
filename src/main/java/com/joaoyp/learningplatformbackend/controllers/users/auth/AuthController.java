@@ -16,6 +16,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/auth")
+@CrossOrigin("*")
 public class AuthController {
 
     @Autowired
@@ -31,6 +32,5 @@ public class AuthController {
         userService.saveUser(userDTO);
         response.put("message", "User successfully created");
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
-
     }
 }

@@ -24,15 +24,17 @@ public class UserModel implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
-    @NotBlank
-    @NotNull
     private String username;
-    @NotBlank
-    @NotNull
     private String password;
-    @Email
     private String email;
     private LocalDateTime created_at;
+
+    public UserModel(String username, String password, String email) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+    }
+
     @PrePersist
     protected void onCreate() {
         created_at = LocalDateTime.now();
