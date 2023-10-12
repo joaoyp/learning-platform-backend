@@ -4,6 +4,7 @@ import com.joaoyp.learningplatformbackend.dtos.UserDTO;
 import com.joaoyp.learningplatformbackend.models.UserModel;
 import com.joaoyp.learningplatformbackend.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +13,7 @@ public class UserService {
     @Autowired
     UserRepository userRepository;
 
-    public UserModel findUsername(String username) {
+    public UserModel findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
 
@@ -27,4 +28,8 @@ public class UserService {
         //BeanUtils.copyProperties(userDTO, user);
         userRepository.save(user);
     }
+
+    /*public UserDetails findByUsername(String subject) {
+        return userRepository.findByUsername(subject);
+    }*/
 }
