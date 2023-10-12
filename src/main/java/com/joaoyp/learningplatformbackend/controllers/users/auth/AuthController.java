@@ -18,8 +18,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
+@CrossOrigin("http://127.0.0.1:3000")
 @RequestMapping("/auth")
-@CrossOrigin("*")
 public class AuthController {
 
     @Autowired
@@ -37,13 +37,18 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<Map<String, String>> registerUser(@RequestBody @Valid UserDTO userDTO){
         Map<String, String> response = new HashMap<>();
-        if (userService.existsByUsername(userDTO.username())){
-            response.put("message", "User already exists");
+        try {
+            if (userService.existsByUsername(userDTO.username())){
+                response.put("message", "User already exists");
+                return ResponseEntity.badRequest().body(response);
+            }
+            userService.saveUser(userDTO);
+            response.put("message", "User successfully created");
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        } catch (Exception e){
+            response.put("message", e.toString());
             return ResponseEntity.badRequest().body(response);
         }
-        userService.saveUser(userDTO);
-        response.put("message", "User successfully created");
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PostMapping("/login")
