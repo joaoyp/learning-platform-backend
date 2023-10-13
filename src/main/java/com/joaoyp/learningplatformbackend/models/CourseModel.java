@@ -24,9 +24,9 @@ public class CourseModel {
     @Column(columnDefinition = "TEXT")
     private String description;
     private String instructor;
-    private Duration duration;
+    private String duration;
     private BigDecimal price;
 
     @ManyToMany(mappedBy = "enrolledCourses")
-    private List<UserModel> enrolledUsers = new ArrayList<>();
+    private List<UserModel> users_enrolled = new ArrayList<>();
 }

@@ -10,6 +10,6 @@ public record CourseDTO(
         @NotBlank @NotNull String name,
         @NotBlank @NotNull String description,
         @NotBlank @NotNull String instructor,
-        @NotBlank @NotNull Duration duration,
+        @NotBlank @NotNull String duration,
         @NotBlank @NotNull BigDecimal price) {
 }

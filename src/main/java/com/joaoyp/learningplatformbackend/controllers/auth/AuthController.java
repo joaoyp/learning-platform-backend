@@ -75,8 +75,9 @@ public class AuthController {
         try {
             Map<String, String> token = tokenService.validateToken(tokenDTO.token());
             response.put("message", "Valid Token");
-            response.put("subject", token.get("subject"));
             response.put("id", token.get("id"));
+            response.put("subject", token.get("subject"));
+            response.put("role", token.get("role"));
             return ResponseEntity.ok().body(response);
         } catch (JWTVerificationException e) {
             response.put("message", "Invalid Token");

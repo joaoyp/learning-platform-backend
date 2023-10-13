@@ -24,6 +24,7 @@ public class TokenService {
                 .withIssuer("Online Learning Platform")
                 .withSubject(user.getUsername())
                 .withClaim("id", user.getId().toString())
+                .withClaim("role", user.getRole())
                 .withExpiresAt(LocalDateTime.now().plusHours(24).toInstant(ZoneOffset.of("+01:00")))
                 .sign(Algorithm.HMAC256(segredo));
     }
@@ -33,6 +34,7 @@ public class TokenService {
         try {
             DecodedJWT jwt = JWT.require(Algorithm.HMAC256(segredo)).withIssuer("Online Learning Platform").build().verify(token);
             tokenClaims.put("id", jwt.getClaim("id").asString());
+            tokenClaims.put("role", jwt.getClaim("role").asString());
             tokenClaims.put("subject", jwt.getSubject());
             return tokenClaims;
         } catch (JWTVerificationException e){
