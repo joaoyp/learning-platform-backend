@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
@@ -29,6 +30,7 @@ public class UserModel implements UserDetails {
     private String email;
     private LocalDateTime created_at;
 
+
     public UserModel(String username, String password, String email) {
         this.username = username;
         this.password = password;
@@ -39,6 +41,14 @@ public class UserModel implements UserDetails {
     protected void onCreate() {
         created_at = LocalDateTime.now();
     }
+
+    @ManyToMany
+    @JoinTable(
+            name = "tb_user_course",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "course_id")
+    )
+    private List<CourseModel> enrolledCourses = new ArrayList<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

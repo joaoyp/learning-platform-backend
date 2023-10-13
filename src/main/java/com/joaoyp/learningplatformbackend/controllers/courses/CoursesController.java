@@ -1,10 +1,10 @@
-package com.joaoyp.learningplatformbackend.controllers.users;
+package com.joaoyp.learningplatformbackend.controllers.courses;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/users/")
-public class UserController {
+@RequestMapping("/courses")
+public class CoursesController {
 
 }

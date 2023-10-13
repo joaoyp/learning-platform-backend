@@ -1,4 +1,4 @@
-package com.joaoyp.learningplatformbackend.controllers.users.auth;
+package com.joaoyp.learningplatformbackend.controllers.auth;
 
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.joaoyp.learningplatformbackend.dtos.TokenDTO;
@@ -73,8 +73,10 @@ public class AuthController {
     public ResponseEntity<?> validateToken(@RequestBody TokenDTO tokenDTO) {
         Map<String, String> response = new HashMap<>();
         try {
-            tokenService.validateToken(tokenDTO.token());
+            Map<String, String> token = tokenService.validateToken(tokenDTO.token());
             response.put("message", "Valid Token");
+            response.put("subject", token.get("subject"));
+            response.put("id", token.get("id"));
             return ResponseEntity.ok().body(response);
         } catch (JWTVerificationException e) {
             response.put("message", "Invalid Token");
