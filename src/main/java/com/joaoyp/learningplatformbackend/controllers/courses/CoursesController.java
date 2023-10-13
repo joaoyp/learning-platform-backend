@@ -1,13 +1,10 @@
 package com.joaoyp.learningplatformbackend.controllers.courses;
 
 import com.joaoyp.learningplatformbackend.dtos.CourseDTO;
-import com.joaoyp.learningplatformbackend.dtos.TokenDTO;
-import com.joaoyp.learningplatformbackend.dtos.UserDTO;
 import com.joaoyp.learningplatformbackend.models.CourseModel;
-import com.joaoyp.learningplatformbackend.models.UserModel;
 import com.joaoyp.learningplatformbackend.services.CourseService;
 import com.joaoyp.learningplatformbackend.services.UserService;
-import jakarta.websocket.server.PathParam;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

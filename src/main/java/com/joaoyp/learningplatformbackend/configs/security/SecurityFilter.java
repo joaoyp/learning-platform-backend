@@ -1,6 +1,5 @@
 package com.joaoyp.learningplatformbackend.configs.security;
 
-import com.joaoyp.learningplatformbackend.repositories.UserRepository;
 import com.joaoyp.learningplatformbackend.services.TokenService;
 import com.joaoyp.learningplatformbackend.services.UserService;
 import jakarta.servlet.FilterChain;
@@ -9,17 +8,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 @Component
 public class SecurityFilter extends OncePerRequestFilter {
@@ -33,43 +27,14 @@ public class SecurityFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         var token = this.recoverToken(request);
         if (token != null){
-            Map<String, String> tokenClaims = tokenService.validateToken(token);
             var subject = tokenService.validateToken(token).get("subject");
             UserDetails user = userService.findByUsername(subject);
-            List<GrantedAuthority> authorities = new ArrayList<>();
-            String role = tokenClaims.get("role");
 
-            if (role != null) {
-                authorities.add(new SimpleGrantedAuthority(role));
-            }
-
-            var auth = new UsernamePasswordAuthenticationToken(user, null, authorities);
+            var auth = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(auth);
         }
         filterChain.doFilter(request, response);
     }
-
-    /*
-    * @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        var token = this.recoverToken(request);
-        if (token != null) {
-            Map<String, String> tokenClaims = tokenService.validateToken(token);
-            UserDetails user = userService.findByUsername(tokenClaims.get("subject"));
-            List<GrantedAuthority> authorities = new ArrayList<>();
-
-            // Add roles to authorities if available in the token
-            String role = tokenClaims.get("role");
-            if (role != null) {
-                authorities.add(new SimpleGrantedAuthority("ROLE_" + role));
-            }
-
-            var auth = new UsernamePasswordAuthenticationToken(user, null, authorities);
-            SecurityContextHolder.getContext().setAuthentication(auth);
-        }
-        filterChain.doFilter(request, response);
-    }*
-    */
 
     private String recoverToken(HttpServletRequest request) {
         var authHeader = request.getHeader("Authorization");
