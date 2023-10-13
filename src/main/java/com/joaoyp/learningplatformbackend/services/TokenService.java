@@ -24,11 +24,11 @@ public class TokenService {
                 .sign(Algorithm.HMAC256(segredo));
     }
 
-    public String validateToken(String token){
+    public String validateToken(String token) throws JWTVerificationException {
         try {
             return JWT.require(Algorithm.HMAC256(segredo)).withIssuer("Online Learning Platform").build().verify(token).getSubject();
         } catch (JWTVerificationException e){
-            return e.toString();
+            throw new JWTVerificationException("Error validating the JWT");
         }
     }
 }

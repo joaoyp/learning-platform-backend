@@ -1,5 +1,7 @@
 package com.joaoyp.learningplatformbackend.controllers.users.auth;
 
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.joaoyp.learningplatformbackend.dtos.TokenDTO;
 import com.joaoyp.learningplatformbackend.dtos.UserDTO;
 import com.joaoyp.learningplatformbackend.models.UserModel;
 import com.joaoyp.learningplatformbackend.services.TokenService;
@@ -64,6 +66,19 @@ public class AuthController {
         }catch (AuthenticationException e){
             response.put("message", "Invalid Username or Password");
             return ResponseEntity.badRequest().body(response);
+        }
+    }
+
+    @PostMapping("/validate-token")
+    public ResponseEntity<?> validateToken(@RequestBody TokenDTO tokenDTO) {
+        Map<String, String> response = new HashMap<>();
+        try {
+            tokenService.validateToken(tokenDTO.token());
+            response.put("message", "Valid Token");
+            return ResponseEntity.ok().body(response);
+        } catch (JWTVerificationException e) {
+            response.put("message", "Invalid Token");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }
     }
 }
