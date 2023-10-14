@@ -1,13 +1,10 @@
 package com.joaoyp.learningplatformbackend.services;
 
 import com.joaoyp.learningplatformbackend.dtos.CourseDTO;
-import com.joaoyp.learningplatformbackend.dtos.UserDTO;
 import com.joaoyp.learningplatformbackend.models.CourseModel;
-import com.joaoyp.learningplatformbackend.models.UserModel;
 import com.joaoyp.learningplatformbackend.repositories.CourseRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,13 +29,18 @@ public class CourseService {
         return courseRepository.findAll();
     }
 
-    public void saveCourse(CourseDTO courseDTO) {
+    public void saveCourseDTO(CourseDTO courseDTO) {
         var course = new CourseModel();
         BeanUtils.copyProperties(courseDTO, course);
         courseRepository.save(course);
     }
 
+    public void updateCourse(CourseModel courseModel) {
+        courseRepository.save(courseModel);
+    }
+
     public boolean existsByName(String name) {
         return courseRepository.existsByName(name);
     }
+
 }

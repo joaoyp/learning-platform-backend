@@ -1,8 +1,11 @@
 package com.joaoyp.learningplatformbackend.controllers.courses;
 
 import com.joaoyp.learningplatformbackend.dtos.CourseDTO;
+import com.joaoyp.learningplatformbackend.dtos.TokenDTO;
 import com.joaoyp.learningplatformbackend.models.CourseModel;
+import com.joaoyp.learningplatformbackend.models.UserModel;
 import com.joaoyp.learningplatformbackend.services.CourseService;
+import com.joaoyp.learningplatformbackend.services.TokenService;
 import com.joaoyp.learningplatformbackend.services.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +25,9 @@ public class CoursesController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    TokenService tokenService;
+
     @GetMapping("/all")
     public ResponseEntity<List<CourseModel>> getAllCourses(){
         return ResponseEntity.ok().body(courseService.getAllCourses());
@@ -40,7 +46,7 @@ public class CoursesController {
                 response.put("message", "Course already exists");
                 return ResponseEntity.badRequest().body(response);
             }
-            courseService.saveCourse(courseDTO);
+            courseService.saveCourseDTO(courseDTO);
             response.put("message", "Course successfully created");
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
         } catch (Exception e){
@@ -49,21 +55,30 @@ public class CoursesController {
         }
     }
 
-    /*@PostMapping("/enroll/{course_id}")
-    public ResponseEntity<String> enrollUser(
+    @PostMapping("/enroll/{course_id}")
+    public ResponseEntity<Map<String, List<String>>> enrollUser(
             @PathVariable(value = "course_id") UUID course_id,
-            @RequestBody TokenDTO token
+            @RequestBody TokenDTO tokenDTO
     ) {
-        Optional<CourseModel> course = courseService.findById(enrollCourseDTO.course_id());
-        Optional<UserModel> user = userService.findById(enrollCourseDTO.user_id());
-
-        if (course != null && user != null) {
-            course.getUsersEnrolled().add(user);
-            courseService.saveCourse(course);
-
-            return ResponseEntity.ok("User enrolled in the course.");
-        } else {
-            return ResponseEntity.badRequest("Invalid course or user.");
-        }
-    }*/
+        //TODO UserCourseModel (from the Many to Many relationship)
+        return ResponseEntity.ok().build();
+    }
 }
+
+        /*UUID user_id = UUID.fromString(tokenService.validateToken(tokenDTO.token()).get("id"));
+
+        Optional<UserModel> user = userService.findById(user_id);
+        Optional<CourseModel> course = courseService.findById(course_id);
+
+        if (user.isPresent() && course.isPresent()) {
+            if (course.get().getUsers_enrolled().contains(user.get())) {
+                return ResponseEntity.badRequest().body("User is already enrolled in the course.");
+            }
+
+            course.get().getUsers_enrolled().add(user.get());
+            courseService.saveCourseModel(course.get());
+
+            return ResponseEntity.ok("User enrolled successfully in " + course.get().getName());
+        } else {
+            return ResponseEntity.badRequest().body("Invalid user or course.");
+        }*/
