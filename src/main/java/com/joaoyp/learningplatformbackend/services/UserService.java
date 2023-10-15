@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -36,6 +37,16 @@ public class UserService {
         //BeanUtils.copyProperties(userDTO, user);
         userRepository.save(user);
     }
+
+    public void updateUser(UserModel userModel) {
+        userRepository.save(userModel);
+    }
+
+    // DELETE THIS AFTER JUST A TEST!!!
+    public List<UserModel> getAllUsers() {
+        return userRepository.findAll();
+    }
+
 
     /*public UserDetails findByUsername(String subject) {
         return userRepository.findByUsername(subject);

@@ -1,11 +1,15 @@
 package com.joaoyp.learningplatformbackend.models;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.Mapping;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -39,37 +43,43 @@ public class UserModel implements UserDetails {
         created_at = LocalDateTime.now();
     }
 
-    @ManyToMany
-    @JoinTable(
-            name = "tb_user_course",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "course_id")
-    )
-    private List<CourseModel> enrolledCourses = new ArrayList<>();
+    @ManyToMany(mappedBy = "users_enrolled", fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<CourseModel> courses_enrolled;
 
     private String role = "ROLE_USER";
 
     @Override
+    public String toString() {
+        return username;
+    }
+
+    @Override
+    @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role));
     }
 
     @Override
+    @JsonIgnore
     public boolean isAccountNonExpired() {
         return true;
     }
 
     @Override
+    @JsonIgnore
     public boolean isAccountNonLocked() {
         return true;
     }
 
     @Override
+    @JsonIgnore
     public boolean isCredentialsNonExpired() {
         return true;
     }
 
     @Override
+    @JsonIgnore
     public boolean isEnabled() {
         return true;
     }

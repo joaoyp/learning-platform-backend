@@ -43,4 +43,7 @@ public class CourseService {
         return courseRepository.existsByName(name);
     }
 
+    public List<CourseModel> findCoursesEnrolledByUserId(UUID userId) {
+        return courseRepository.findCoursesEnrolledByUserId(userId);
+    }
 }
