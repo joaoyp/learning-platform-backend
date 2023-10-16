@@ -34,6 +34,11 @@ public class CoursesController {
         return ResponseEntity.ok().body(courseService.getAllCourses());
     }
 
+    @GetMapping("/{course_id}")
+    public ResponseEntity<CourseModel> getCourse(@PathVariable(value = "course_id") UUID course_id) {
+        return ResponseEntity.ok().body(courseService.findById(course_id).get());
+    }
+
     @PostMapping("/courses-user")
     public ResponseEntity<List<CourseModel>> getCoursesOfUser(@RequestBody TokenDTO tokenDTO) {
         UUID userId = UUID.fromString(tokenService.validateToken(tokenDTO.token()).get("id"));
