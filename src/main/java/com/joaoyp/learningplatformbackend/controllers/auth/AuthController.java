@@ -20,7 +20,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@CrossOrigin("http://127.0.0.1:3000")
 @RequestMapping("/auth")
 public class AuthController {
 
