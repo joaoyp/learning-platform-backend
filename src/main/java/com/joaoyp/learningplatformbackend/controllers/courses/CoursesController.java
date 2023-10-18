@@ -96,21 +96,3 @@ public class CoursesController {
 
     }
 }
-
-        /*UUID user_id = UUID.fromString(tokenService.validateToken(tokenDTO.token()).get("id"));
-
-        Optional<UserModel> user = userService.findById(user_id);
-        Optional<CourseModel> course = courseService.findById(course_id);
-
-        if (user.isPresent() && course.isPresent()) {
-            if (course.get().getUsers_enrolled().contains(user.get())) {
-                return ResponseEntity.badRequest().body("User is already enrolled in the course.");
-            }
-
-            course.get().getUsers_enrolled().add(user.get());
-            courseService.saveCourseModel(course.get());
-
-            return ResponseEntity.ok("User enrolled successfully in " + course.get().getName());
-        } else {
-            return ResponseEntity.badRequest().body("Invalid user or course.");
-        }*/
