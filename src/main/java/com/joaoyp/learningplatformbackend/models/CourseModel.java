@@ -30,6 +30,11 @@ public class CourseModel {
     private String instructor;
     private String duration;
     private BigDecimal price;
+    private String difficulty;
+    @Column(columnDefinition = "TEXT")
+    private String imagePath;
+    private double rating;
+    private String category;
     private LocalDateTime created_at;
     @PrePersist
     protected void onCreate() {
